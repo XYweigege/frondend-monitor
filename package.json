@@ -1,6 +1,6 @@
 {
   "name": "monitor-sdk-fe",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A monitoring SDK for browsers and Node environments.",
   "main": "dist/monitor.cjs.js",
   "module": "dist/monitor.esm.js",
@@ -16,7 +16,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "readme.md"
   ],
   "keywords": [
     "sdk",
