@@ -103,7 +103,19 @@ webEyeSDK.init({
 
 ## API 参考
 
-### 初始化
+### 初始化方法
+```javascript
+// ES Module 方式导入
+import webEyeSDK from 'monitor-sdk-fe';
+
+// 初始化SDK
+webEyeSDK.init({
+  appId: 'your-app-id',
+  usePerformance: true,
+  useError: true,
+  useBehavior: true
+});
+```
 
 ```javascript
 // 基本初始化
@@ -123,36 +135,61 @@ webEyeSDK.init({
 
 ### 框架集成
 
-#### Vue.js 集成
-
+#### Vue 集成
 ```javascript
 import Vue from 'vue';
 import webEyeSDK from 'monitor-sdk-fe';
 
-// 作为Vue插件使用
 Vue.use(webEyeSDK, {
-  appId: 'your-application-id',
-  url: 'https://your-report-server.com/api'
+  appId: 'your-app-id'
 });
 ```
 
 #### React 集成
-
 ```javascript
-import React from 'react';
+// 1. 导入SDK并初始化
 import webEyeSDK from 'monitor-sdk-fe';
 
-// 在ErrorBoundary组件中使用
+// 在应用入口初始化SDK
+webEyeSDK.init({
+  appId: 'your-app-id',
+  usePerformance: true,
+  useError: true,
+  useBehavior: true
+});
+
+// 2. 创建错误边界组件捕获React错误
 class ErrorBoundary extends React.Component {
-  componentDidCatch(error, errorInfo) {
-    webEyeSDK.errorBoundary(error, errorInfo);
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
   }
-  
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    // 使用SDK的errorBoundary方法上报React错误
+    webEyeSDK.errorBoundary(error, info.componentStack);
+  }
+
   render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
     return this.props.children;
   }
 }
-```
+
+// 3. 使用错误边界包裹应用
+function App() {
+  return (
+    <ErrorBoundary fallback={<p>Something went wrong</p>}>
+      <YourAppComponents />
+    </ErrorBoundary>
+  );
+}
 
 ### 手动启用/禁用模块
 
