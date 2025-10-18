@@ -1,15 +1,32 @@
 {
-  "name": "eyesdk",
+  "name": "monitor-sdk-fe",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A monitoring SDK for browsers and Node environments.",
+  "main": "dist/monitor.cjs.js",
+  "module": "dist/monitor.esm.js",
+  "browser": "dist/monitor.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c rollup/build.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "exports": {
+    ".": {
+      "import": "./dist/monitor.esm.js",
+      "require": "./dist/monitor.cjs.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "sdk",
+    "monitoring",
+    "esm",
+    "cjs",
+    "iife"
+  ],
+  "author": "yaowei",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.24.4",
     "@babel/preset-env": "^7.24.4",

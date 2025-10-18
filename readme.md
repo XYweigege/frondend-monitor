@@ -1,282 +1,193 @@
 
 
 
-# WebEyeSDK 前端监控SDK
+# monitor-sdk-fe
 
-一个轻量级、高性能的前端监控SDK，用于收集和分析网页的错误、性能和用户行为数据，帮助开发者更好地了解和优化前端应用。
+一个用于浏览器和Node环境的监控SDK，用于收集性能指标、错误信息和用户行为数据。
 
-## ✨ 功能特性
+## 功能概述
 
-### 错误监控
+### 🔍 错误监控
 - JavaScript 运行时错误捕获
 - 资源加载错误监控
-- Promise 未捕获异常监控
+- Promise 异常监控
 - 自定义错误上报
 
-### 性能监控
-- 核心 Web Vitals 指标收集（FCP、LCP、CLS等）
-- 页面加载性能监控
-- 资源加载性能监控
+### 🚀 性能监控
+- 核心性能指标采集（FCP、LCP等）
+- 页面加载性能分析
 - API 请求性能监控（XHR、Fetch）
+- 资源加载性能统计
 
-### 用户行为监控
-- 页面访问量（PV）统计
-- 页面切换监控
-- 点击事件追踪
-- 自定义事件上报
+### 📊 用户行为监控
+- 页面访问量统计
+- 页面切换追踪
+- 点击事件分析
+- 自定义事件收集
 
-### 数据上报
-- 批量上报机制
-- 数据本地缓存
-- 失败重试策略
+## 快速开始
 
-## 🚀 安装
-
-### NPM 安装
+### 安装
 
 ```bash
-npm install webeyssdk --save
+# 使用 npm
+npm install monitor-sdk-fe --save
+
+# 使用 yarn
+yarn add monitor-sdk-fe
+
+# 使用 pnpm
+pnpm add monitor-sdk-fe
 ```
 
-### CDN 引入
-
-```html
-<script src="https://cdn.example.com/webeyssdk.min.js"></script>
-```
-
-## 📖 使用指南
-
-### 基本用法
+### 基本使用
 
 ```javascript
-// ES Module
-import WebEyeSDK from 'webeyssdk';
+// ES Module 引入
+import MonitorSDK from 'monitor-sdk-fe';
 
 // 初始化SDK
-const sdk = new WebEyeSDK({
-  appId: 'your-app-id',
-  serverUrl: 'https://your-monitor-server.com/api/report',
-  sampleRate: 1.0,
+const sdk = new MonitorSDK({
+  appId: 'your-application-id',
+  serverUrl: 'https://your-report-server.com/api',
   enableError: true,
   enablePerformance: true,
-  enableBehavior: true
+  enableBehavior: true,
+  sampleRate: 1.0
 });
 
 // 启动监控
 sdk.init();
 ```
 
+### CommonJS 引入
+
+```javascript
+// CommonJS 引入
+const MonitorSDK = require('monitor-sdk-fe');
+
+// 初始化并启动SDK
+const sdk = new MonitorSDK({
+  appId: 'your-application-id',
+  serverUrl: 'https://your-report-server.com/api'
+});
+sdk.init();
+```
+
 ### 浏览器直接使用
 
 ```html
+<script src="https://unpkg.com/monitor-sdk-fe/dist/monitor.js"></script>
 <script>
-  // 初始化SDK
-  const sdk = new window.WebEyeSDK({
-    appId: 'your-app-id',
-    serverUrl: 'https://your-monitor-server.com/api/report'
+  // 初始化并启动SDK
+  const sdk = new window.MonitorSDK({
+    appId: 'your-application-id',
+    serverUrl: 'https://your-report-server.com/api'
   });
-  
-  // 启动监控
   sdk.init();
 </script>
 ```
 
-## ⚙️ 配置选项
+## 配置选项
 
-| 配置项 | 类型 | 默认值 | 说明 |
-| ------ | ---- | ------ | ---- |
-| appId | String | - | 应用唯一标识，必填 |
-| serverUrl | String | - | 数据上报地址，必填 |
-| sampleRate | Number | 1.0 | 采样率（0-1） |
-| enableError | Boolean | true | 是否启用错误监控 |
-| enablePerformance | Boolean | true | 是否启用性能监控 |
-| enableBehavior | Boolean | true | 是否启用行为监控 |
-| maxBatchSize | Number | 20 | 批量上报的最大条数 |
-| reportInterval | Number | 5000 | 上报间隔（毫秒） |
+| 选项 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| appId | String | - | 应用ID（必填） |
+| serverUrl | String | - | 数据上报地址（必填） |
+| sampleRate | Number | 1.0 | 采样率(0-1) |
+| enableError | Boolean | true | 是否开启错误监控 |
+| enablePerformance | Boolean | true | 是否开启性能监控 |
+| enableBehavior | Boolean | true | 是否开启行为监控 |
+| maxBatchSize | Number | 20 | 批量上报最大条数 |
+| reportInterval | Number | 5000 | 上报间隔(ms) |
 | debug | Boolean | false | 是否开启调试模式 |
 
-## 📊 API 文档
+## API 参考
 
 ### 初始化与配置
 
-#### `new WebEyeSDK(config)`
-创建SDK实例
-
+#### 创建SDK实例
 ```javascript
-const sdk = new WebEyeSDK(config);
+const sdk = new MonitorSDK(config);
 ```
 
-#### `sdk.init()`
-启动监控
-
+#### 初始化监控
 ```javascript
 sdk.init();
 ```
 
-#### `sdk.setConfig(config)`
-动态更新配置
-
+#### 更新配置
 ```javascript
-sdk.setConfig({
-  sampleRate: 0.5,
-  enableBehavior: false
-});
+sdk.setConfig({ enableBehavior: false, sampleRate: 0.5 });
 ```
 
-#### `sdk.destroy()`
-销毁SDK实例，停止所有监控
-
+#### 销毁实例
 ```javascript
 sdk.destroy();
 ```
 
-### 自定义上报
+### 数据上报API
 
-#### `sdk.reportError(error)`
-上报自定义错误
-
+#### 上报自定义错误
 ```javascript
-sdk.reportError(new Error('Custom error message'));
+sdk.reportError(new Error('Something went wrong'));
 ```
 
-#### `sdk.reportEvent(name, data)`
-上报自定义事件
-
+#### 上报自定义事件
 ```javascript
-sdk.reportEvent('custom_event', {
-  category: 'user',
-  action: 'share',
-  label: 'facebook'
-});
+sdk.reportEvent('custom_event', { key: 'value' });
 ```
 
-#### `sdk.reportPerformance(metrics)`
-上报自定义性能数据
-
+#### 上报性能数据
 ```javascript
-sdk.reportPerformance({
-  name: 'custom_measure',
-  duration: 123,
-  start: 1623456789
-});
+sdk.reportPerformance({ name: 'custom_metric', value: 100 });
 ```
 
-## 🔍 数据格式
+## 开发指南
 
-### 错误数据
-
-```javascript
-{
-  type: 'error',
-  timestamp: 1623456789000,
-  appId: 'your-app-id',
-  pageUrl: 'https://example.com/page',
-  errorInfo: {
-    message: 'Uncaught TypeError: Cannot read property of undefined',
-    stack: 'Error: ...',
-    type: 'TypeError',
-    filename: 'app.js',
-    lineno: 42,
-    colno: 12
-  }
-}
-```
-
-### 性能数据
-
-```javascript
-{
-  type: 'performance',
-  timestamp: 1623456789000,
-  appId: 'your-app-id',
-  pageUrl: 'https://example.com/page',
-  metrics: {
-    fcp: 123,
-    lcp: 456,
-    cls: 0.1,
-    ttfb: 100,
-    domReady: 300,
-    load: 500
-  }
-}
-```
-
-### 行为数据
-
-```javascript
-{
-  type: 'behavior',
-  timestamp: 1623456789000,
-  appId: 'your-app-id',
-  pageUrl: 'https://example.com/page',
-  eventType: 'click',
-  eventData: {
-    target: '#button',
-    text: 'Submit',
-    path: ['div', 'form', 'button']
-  }
-}
-```
-
-## 🛠️ 项目结构
+### 项目结构
 
 ```
 src/
 ├── behavior/         # 行为监控模块
-│   ├── index.js      # 行为监控入口
-│   ├── onClick.js    # 点击事件监控
-│   ├── pageChange.js # 页面切换监控
-│   └── pv.js         # 页面访问量监控
 ├── error/            # 错误监控模块
-│   └── index.js      # 错误监控入口
 ├── performance/      # 性能监控模块
-│   ├── index.js      # 性能监控入口
-│   ├── fetch.js      # Fetch请求监控
-│   ├── observeLCP.js # LCP指标监控
-│   ├── observerFCP.js # FCP指标监控
-│   ├── observerLoad.js # 页面加载监控
-│   ├── observerPaint.js # 绘制指标监控
-│   └── xhr.js        # XHR请求监控
-├── cache.js          # 本地缓存模块
-├── config.js         # 配置管理模块
-├── report.js         # 数据上报模块
-├── utils.js          # 工具函数模块
-└── webEyeSDK.js      # SDK主类
+├── cache.js          # 数据缓存
+├── config.js         # 配置管理
+├── report.js         # 数据上报
+├── utils.js          # 工具函数
+└── webEyeSDK.js      # 主入口
 ```
 
-## 🔧 开发指南
-
-### 安装依赖
+### 本地开发
 
 ```bash
+# 安装依赖
 pnpm install
-```
 
-### 构建项目
-
-```bash
-pnpm run build
-```
-
-### 本地开发服务器
-
-```bash
+# 启动本地服务器
 node server.js
+
+# 构建项目
+npm run build
 ```
 
-然后访问 `http://localhost:3000/demo/index.html` 查看演示页面。
+### 示例页面
 
-## 📝 浏览器兼容性
+项目包含多个演示页面，展示SDK的不同功能：
 
-- Chrome (>= 60)
-- Firefox (>= 55)
-- Safari (>= 11)
-- Edge (>= 80)
+- 基础示例: `http://localhost:3000/demo/index.html`
+- 错误监控: `http://localhost:3000/demo/error/index.html`
+- 性能监控: `http://localhost:3000/demo/performance/index.html`
+- 行为监控: `http://localhost:3000/demo/behavior/index.html`
 
-## 🤝 贡献指南
+## 浏览器兼容性
 
-欢迎提交 Issue 和 Pull Request 来改进这个项目。
+- Chrome (最近2个版本)
+- Firefox (最近2个版本)
+- Safari (最近2个版本)
+- Edge (最近2个版本)
 
-## 📄 许可证
+## 许可证
 
-[MIT License](https://opensource.org/licenses/MIT)
+MIT
